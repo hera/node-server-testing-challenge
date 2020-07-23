@@ -2,7 +2,8 @@ const db = require("../../data/dbConfig");
 
 module.exports = {
     getAll,
-    add
+    add,
+    remove
 };
 
 const TABLE_NAME = "post";
@@ -24,4 +25,10 @@ function add (postData) {
         .then(ids => {
             return getById(ids[0]);
         })
+}
+
+function remove (id) {
+    const removedPost = getById(id);
+    
+    return db(TABLE_NAME).where({id}).del();
 }
