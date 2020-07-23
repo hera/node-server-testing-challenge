@@ -27,6 +27,7 @@ describe("Test db functions", () => {
         expect(added).toHaveLength(1);
 
         const posts = await postDb.getAll();
+        console.log(posts);
         expect(posts).toHaveLength(1);
     });
 
@@ -81,7 +82,7 @@ describe("Test posts", () => {
             .then(response => {
                 expect(response.status).toBe(201);
                 expect(response.headers["content-type"]).toMatch(/application\/json/);
-                expect(response).toHaveLength(1);
+                expect(response.body).toHaveLength(1);
             });
     });
 
