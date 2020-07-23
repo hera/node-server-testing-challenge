@@ -27,7 +27,6 @@ describe("Test db functions", () => {
         expect(added).toHaveLength(1);
 
         const posts = await postDb.getAll();
-        console.log(posts);
         expect(posts).toHaveLength(1);
     });
 
@@ -87,19 +86,18 @@ describe("Test posts", () => {
     });
 
 
-    let postId;
-
     test("Get all posts", async () => {
         const response = await request(server).get("/api/posts");
 
         expect(response.status).toBe(200);
         expect(response.headers["content-type"]).toMatch(/application\/json/);
         expect(response.body).toHaveLength(1);
-        postId = response.body[0]["id"];
     });
 
-
     test("Del a post", async () => {
+        const posts = await request(server).get("/api/posts");
+        const postId = posts["body"][0]["id"];
+
         const response = await request(server).del(`/api/posts/${postId}`);
 
         expect(response.status).toBe(200);

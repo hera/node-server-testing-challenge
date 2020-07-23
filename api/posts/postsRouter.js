@@ -37,7 +37,16 @@ router.post("/", (req, res) => {
 
 
 router.delete("/:id", (req, res) => {
-    res.status(501).send("Not implemented");
+    postDb.remove(req.params.id)
+        .then(post => {
+            res.status(200).json(post);
+        })
+        .catch(error => {
+            res.status(500).json({
+                error: "Server error. Could not delete a post.",
+                description: error
+            });
+        });
 });
 
 

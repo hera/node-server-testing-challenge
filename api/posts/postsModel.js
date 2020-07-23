@@ -27,8 +27,13 @@ function add (postData) {
         })
 }
 
-function remove (id) {
-    const removedPost = getById(id);
+async function remove (id) {
+    const removedPost = await getById(id);
     
-    return db(TABLE_NAME).where({id}).del();
+    return db(TABLE_NAME)
+        .where("id", id)
+        .del()
+        .then(rows => {
+            return removedPost;
+        });
 }
