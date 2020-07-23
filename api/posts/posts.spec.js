@@ -62,7 +62,7 @@ describe("Test posts", () => {
     });
 
 
-    test("Receives an empty array", async () => {
+    test("Get all posts (empty)", async () => {
         const response = await request(server).get("/api/posts");
 
         expect(response.status).toBe(200);
@@ -70,6 +70,18 @@ describe("Test posts", () => {
         expect(response.body).toHaveLength(0);
     });
 
+
+    test("Try to add an invalid post", async () => {
+        await request(server)
+            .post("/api/posts")
+            .send({
+                content: "test"
+            })
+            .then(response => {
+                expect(response.status).toBe(400);
+                expect(response.headers["content-type"]).toMatch(/application\/json/);
+            });
+    });
 
     test("Add a post", async () => {
         await request(server)

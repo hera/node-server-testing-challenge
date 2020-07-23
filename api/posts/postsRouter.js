@@ -1,5 +1,6 @@
 const express = require("express");
 const postDb = require("../posts/postsModel");
+const { validatePostData } = require("./postsMiddleware");
 
 const router = express.Router();
 
@@ -22,7 +23,7 @@ router.get("/", (req, res) => {
 
 // Add a post
 
-router.post("/", (req, res) => {
+router.post("/", validatePostData, (req, res) => {
     postDb.add(req.body)
         .then(post => {
             res.status(201).json(post);
