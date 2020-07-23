@@ -40,7 +40,13 @@ router.post("/", validatePostData, (req, res) => {
 router.delete("/:id", (req, res) => {
     postDb.remove(req.params.id)
         .then(post => {
-            res.status(200).json(post);
+            if (!post.length) {
+                res.status(404).json({
+                    error: "Not found"
+                });
+            } else {
+                res.status(200).json(post);
+            }
         })
         .catch(error => {
             res.status(500).json({

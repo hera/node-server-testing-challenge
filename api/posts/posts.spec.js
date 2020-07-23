@@ -14,10 +14,12 @@ describe("Test db functions", () => {
         await db("post").truncate();
     });
 
+
     test("Gets all posts", async () => {
         const posts = await postDb.getAll();
         expect(posts).toHaveLength(0);
     });
+
 
     test("Add a post", async () => {
         const added = await postDb.add({
@@ -29,6 +31,7 @@ describe("Test db functions", () => {
         const posts = await postDb.getAll();
         expect(posts).toHaveLength(1);
     });
+
 
     test("Remove a post", async () => {
         const postAdded = await postDb.add({
@@ -83,6 +86,7 @@ describe("Test posts", () => {
             });
     });
 
+
     test("Add a post", async () => {
         await request(server)
             .post("/api/posts")
@@ -106,6 +110,15 @@ describe("Test posts", () => {
         expect(response.body).toHaveLength(1);
     });
 
+
+    test("Try to delete a post that does not exist", async () => {
+        const response = await request(server).del(`/api/posts/912935124`);
+
+        expect(response.status).toBe(404);
+        expect(response.headers["content-type"]).toMatch(/application\/json/);
+    });
+
+
     test("Del a post", async () => {
         const posts = await request(server).get("/api/posts");
         const postId = posts["body"][0]["id"];
@@ -125,6 +138,5 @@ describe("Test posts", () => {
         expect(response.headers["content-type"]).toMatch(/application\/json/);
         expect(response.body).toHaveLength(0);
     });
-
     
 });

@@ -29,6 +29,8 @@ function add (postData) {
 
 async function remove (id) {
     const removedPost = await getById(id);
+
+    if (!removedPost.length) return removedPost;
     
     return db(TABLE_NAME)
         .where("id", id)
