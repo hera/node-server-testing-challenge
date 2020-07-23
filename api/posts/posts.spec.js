@@ -4,7 +4,51 @@ const server = require("../../server");
 const db = require("../../data/dbConfig");
 const postDb = require("./postsModel");
 
+describe("Test db functions", () => {
+    beforeEach(async () => {
+        await db("post").truncate();
+    });
+    
 
+    afterEach(async () => {
+        await db("post").truncate();
+    });
+
+    test("Gets all posts", async () => {
+        const posts = await postDb.getAll();
+        expect(posts).toHaveLength(0);
+    });
+
+    test("Add a post", async () => {
+        const added = await postDb.add({
+            title: "Sample post",
+            content: "Sample content"
+        });
+        expect(added).toHaveLength(1);
+
+        const posts = await postDb.getAll();
+        expect(posts).toHaveLength(1);
+    });
+
+    test("Remove a post", async () => {
+        const postAdded = await postDb.add({
+            title: "Sample post",
+            content: "Sample content"
+        });
+
+
+        const postId = postAdded[0]["id"];
+
+        let posts = await postDb.getAll();
+        expect(posts).toHaveLength(1);
+
+        const removedPost = await postDb.remove(postId);
+
+        posts = await postDb.getAll();
+        expect(posts).toHaveLength(0);
+    });
+
+});
 
 describe("Test posts", () => {
 
